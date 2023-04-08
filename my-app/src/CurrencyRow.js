@@ -20,7 +20,7 @@ export default function CurrencyRow(props) {
             {currencyOptions.map(option => (
                 <>
                 <div>
-                <button key={option.id} onClick={console.log("butttton")}>{option.base_currency}: {option.base_increment}</button>
+                <button key={option.named} onClick={console.log("butttton")}>{option.base_currency}: {option.base_increment}</button>
                 {/* <span>{option.base_increment}</span> */}
                 </div>
                 {/* <h1>{filterParam}</h1> */}
