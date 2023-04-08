@@ -4,7 +4,6 @@ import CurrencyExchange from './CurrencyExchange';
 // import TextField from "@mui/material/TextField";
 
 import React,{useState,useEffect} from 'react';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 const url = "https://api.pro.coinbase.com";
 const rurl = "https://rest.coinapi.io/v1/exchangerate";
 const exrurl = "https://api.coinbase.com/v2/exchange-rates"
@@ -13,22 +12,9 @@ function baseCurr(element: any, base: string, array: any) {
 	return (element.quote_currency == "USD");
 }
 
-type DataType = {
-  data: {
-    currency: string,
-    rates: {
-      [key: string]: number | undefined
-    }
-  };
-}
 function App() {
   const [currencies,setCurrencies]=useState<any[]>([])
-  const [currency2,setCurrency2]=useState<any>(
-    {data: 
-      { currency: 'USD', rates: { 
-        'XCN' : 233.9181286549707602
-      }
-    }})
+  const [currency2,setCurrency2]=useState<any[]>([])
 
   useEffect(() => {
     fetchCurrencies();
@@ -38,20 +24,21 @@ function App() {
     fetchCurrency2();
   }, [])
 
+  //useEffect(() => {
+  //  console.log(currencies)
+  //}, [currencies])
+
+  // useEffect(() => {
+  //   console.log(currency)
+  // }, [currency])
+
   const fetchCurrency2=async()=>{
+    // const headers =  {'X-CoinAPI-Key': '079DF833-3789-4BD8-9B3D-82D6E8BAEFE4'}
     const response=await fetch(exrurl)
 	.then(response => response.json())
 	.then(res =>setCurrency2(res))
   }
-
-console.log(currency2);
-let currenciesArray :any = []
-Object.keys(currency2.data.rates).forEach(function(key) {
-  console.log(key)
-  currenciesArray.push({named: key, value: currency2.data.rates[key]})
-  // currenciesArray.push({named: currency2.data.rates, value: currency2.data.rates[key]})
-})
-console.log(currenciesArray)
+  console.log(currency2)
 
   const fetchCurrencies=async()=>{
     const response=await fetch(url + "/products")
@@ -62,34 +49,36 @@ console.log(currenciesArray)
 
   const[query, setQuery] = useState("");
   
-  const[currDisplay, setCurrDisplay] = useState(["USD", 1]);
+  const[currDisplay, setCurrDisplay] = useState("USD");
   
   // console.log(currencies.filter(currency=>currency.id.toLowerCase().includes("SU")))
-  // console.log(currDisplay)
+  console.log(currDisplay)
   return (
     <>
     <h1>Currencies</h1>
     <CurrencyExchange currencyOptions = {currencies}/>
     {/* display for more info on click! */}
-    <h2>{currDisplay[0]}</h2>
-    <h2>{currDisplay[1]}</h2>
+    <h2>{currDisplay}</h2>
 
-    <input type ="text" placeholder="Search..." className="search2" onChange={e=>{setQuery(e.target.value)}}/>
+    <input type ="text" placeholder="Search..." className="search2" onChange={e=>{setQuery(e.target.value); console.log("hi");}}/>
     <ul className="list">
-      {currenciesArray.filter((currency:any) =>
-      currency.named.toLowerCase().includes(query)).map((currency:any) => (
+      {currencies.filter((currency) =>
+      currency.id.toLowerCase().includes(query)
+      ).map((currency) => (
         <>
         <div>
         <button className="listItem" 
-          id={currency.named}
-          value={currency.value}
-          onClick={e=>setCurrDisplay([e.currentTarget.id, e.currentTarget.value])}>
-            {currency.named}
+          id={currency.base_currency}
+          key={currency.id}
+          onClick={e=>setCurrDisplay(e.currentTarget.id)}>
+            {currency.base_currency}:{currency.base_increment}
         </button>
         </div>
         </>
       ))}
     </ul>
+
+    <button>USD: 0.001</button> {/*fixme!*/}
     <div className="App">
       {
       }
