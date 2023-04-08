@@ -1,7 +1,9 @@
 import React from 'react';
-
-function ProjectsPage() {
-  return <h1>Projects</h1>;
+interface Name {
+	name: string;
+}
+function ProjectsPage(props: Name) {
+  return <h1>Projects, {props.name}</h1>;
 }
 
 export default ProjectsPage;
