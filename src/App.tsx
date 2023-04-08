@@ -61,20 +61,16 @@ function handleToAmountChange(e:any) {
 
   return (
     <>
-    {/* <h1>Currencies</h1> */}
-    <h1>Selected Currency Base == {currDisplay[0]}</h1>
+    <h1>{fromCurrency[0]} to {toCurrency[0]} exchange rate is {Number(toCurrency[1])/fromCurrency[1]}</h1>
     <div className="toCurr">
-      <h4>exchange rate: </h4>
+        <h4>select exchange currency: </h4>
         <div>
-        {/* setFromCurrency(e.target.value) */}
       <select value={toCurrency[0]} onChange={e => setToCurrency([e.target.value, currency2.data.rates[e.target.value]])}>
         {currenciesArray.map((option:any) => (
           <option key={option.named} value={option.named}>{option.named}</option>
         ))}
       </select>
     </div>
-    <div>{Number(toCurrency[1])/fromCurrency[1]}</div>
-    
     </div>
 
     <div className="baseCurr">    
@@ -101,9 +97,6 @@ function handleToAmountChange(e:any) {
             }}>
             {currency.named}
           </button>
-          {/* {let fC : number = fromCurrency} */}
-          {/* <div>{currency.value/fromCurrency[1]}</div> */}
-          {/* 1.2 / .3 =  */}
           </div>
         </>
       ))}
